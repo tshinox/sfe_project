@@ -9,17 +9,14 @@ def spaceIsFree(pos):
     return board[pos] == ' '
 
 def printBoard(board):
-    print('   |   |')
-    print(' ' + board[1] + ' | ' + board[2] + ' | ' + board[3])
-    print('   |   |')
-    print('-----------')
-    print('   |   |')
-    print(' ' + board[4] + ' | ' + board[5] + ' | ' + board[6])
-    print('   |   |')
-    print('-----------')
-    print('   |   |')
-    print(' ' + board[7] + ' | ' + board[8] + ' | ' + board[9])
-    print('   |   |')
+    print('-------------')
+    print('| ' + board[1] + ' | ' + board[2] + ' | ' + board[3]+ ' | ')
+    print('-------------')
+    print('| ' + board[4] + ' | ' + board[5] + ' | ' + board[6]+ ' | ')
+    print('-------------')
+    print('| ' + board[7] + ' | ' + board[8] + ' | ' + board[9]+ ' | ')
+    print('-------------')
+    
     
 def isWinner(bo, le):
     return (bo[7] == le and bo[8] == le and bo[9] == le) or (bo[4] == le and bo[5] == le and bo[6] == le) or(bo[1] == le and bo[2] == le and bo[3] == le) or(bo[1] == le and bo[4] == le and bo[7] == le) or(bo[2] == le and bo[5] == le and bo[8] == le) or(bo[3] == le and bo[6] == le and bo[9] == le) or(bo[1] == le and bo[5] == le and bo[9] == le) or(bo[3] == le and bo[5] == le and bo[7] == le)
@@ -27,9 +24,30 @@ def isWinner(bo, le):
 def playerMove():
     run = True
     while run:
-        move = input('Please select a position to place an \'X\' (1-9): ')
+        row = int(input('Player X, please enter a row (0, 1 or 2): '))
+        col = int(input('Player X, please enter a column (0, 1 or 2): '))
+        if row == 0 and col == 0:
+            move = 1
+        elif row == 0 and col == 1:
+            move = 2
+        elif row == 0 and col == 2:
+            move = 3
+        elif row == 1 and col == 0:
+            move = 4
+        elif row == 1 and col == 1:
+            move = 5
+        elif row == 1 and col == 2:
+            move = 6
+        elif row == 2 and col == 0:
+            move = 7
+        elif row == 2 and col == 1:
+            move = 8
+        elif row == 2 and col == 2:
+            move = 9
+        else:
+            print('Invalid row or column value')
+
         try:
-            move = int(move)
             if move > 0 and move < 10:
                 if spaceIsFree(move):
                     run = False
@@ -40,49 +58,45 @@ def playerMove():
                 print('Please type a number within the range!')
         except:
             print('Please type a number!')
-            
 
-def compMove():
-    possibleMoves = [x for x, letter in enumerate(board) if letter == ' ' and x != 0]
-    move = 0
+def player2Move():
+    run = True
+    while run:
+        row = int(input('Player O, please enter a row (0, 1 or 2): '))
+        col = int(input('Player O, please enter a column (0, 1 or 2): '))
+        if row == 0 and col == 0:
+            move = 1
+        elif row == 0 and col == 1:
+            move = 2
+        elif row == 0 and col == 2:
+            move = 3
+        elif row == 1 and col == 0:
+            move = 4
+        elif row == 1 and col == 1:
+            move = 5
+        elif row == 1 and col == 2:
+            move = 6
+        elif row == 2 and col == 0:
+            move = 7
+        elif row == 2 and col == 1:
+            move = 8
+        elif row == 2 and col == 2:
+            move = 9
+        else:
+            print('Invalid row or column value')
 
-    for let in ['O', 'X']:
-        for i in possibleMoves:
-            boardCopy = board[:]
-            boardCopy[i] = let
-            if isWinner(boardCopy, let):
-                move = i
-                return move
-
-    cornersOpen = []
-    for i in possibleMoves:
-        if i in [1,3,7,9]:
-            cornersOpen.append(i)
-            
-    if len(cornersOpen) > 0:
-        move = selectRandom(cornersOpen)
-        return move
-
-    if 5 in possibleMoves:
-        move = 5
-        return move
-
-    edgesOpen = []
-    for i in possibleMoves:
-        if i in [2,4,6,8]:
-            edgesOpen.append(i)
-            
-    if len(edgesOpen) > 0:
-        move = selectRandom(edgesOpen)
-        
-    return move
-
-def selectRandom(li):
-    import random
-    ln = len(li)
-    r = random.randrange(0,ln)
-    return li[r]
-    
+        try:
+            if move > 0 and move < 10:
+                if spaceIsFree(move):
+                    run = False
+                    insertLetter('O', move)
+                else:
+                    print('Sorry, this space is occupied!')
+            else:
+                print('Please type a number within the range!')
+        except:
+            print('Please type a number!')
+              
 
 def isBoardFull(board):
     if board.count(' ') > 1:
@@ -103,13 +117,11 @@ def main():
             break
 
         if not(isWinner(board, 'X')):
-            move = compMove()
-            if move == 0:
-                print('Tie Game!')
-            else:
-                insertLetter('O', move)
-                print('Computer placed an \'O\' in position', move , ':')
-                printBoard(board)
+            player2Move()
+           # if move == 0:
+           #     print('Tie Game!')
+           # else:
+            printBoard(board)
         else:
             print('X\'s won this time! Good Job!')
             break
