@@ -6,5 +6,8 @@ class tttTest(unittest.TestCase):
         results = spaceIsFree(1)
         self.assertFalse(results)
 
+    # space is free method testing
+    
+
 if __name__ == '__main__':
     unittest.main() 
